@@ -34,7 +34,7 @@ public class PlayerMovementController : MonoBehaviour
     float defaultGravityScale;
 
     #region Input Fields
-        [HideInInspector]
+        // [HideInInspector]
         public Vector2 movInput;
     #endregion
 
@@ -48,11 +48,15 @@ public class PlayerMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HandleFlippingCharacter();
         CheckGround();
         CheckFront();
-        HandleJumping();
-        HandleMovement();
-        HandleWallMovement();
+        // Input
+        if(!isWallJumping){
+            HandleJumping();
+            HandleMovement();
+            HandleWallMovement();
+        }
         
     }
 
@@ -69,10 +73,6 @@ public class PlayerMovementController : MonoBehaviour
             // Debug.Log(velY);
             rb.velocity = new Vector2(rb.velocity.x, velY);
         }
-
-        if(isWallJumping){
-            rb.velocity = new Vector2(wallJumpForce.x * -movInput.x, wallJumpForce.y);
-        }
     }
 
     void CheckFront(){
@@ -83,13 +83,20 @@ public class PlayerMovementController : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
     }
 
-    void HandleMovement(){
+    void HandleFlippingCharacter(){
+        Vector3 rot = transform.rotation.eulerAngles;
         if(movInput.x > 0){
             // Look right
+            // rb.SetRotation(Quaternion.Euler(rot.x, 0, rot.z));
             transform.localScale = new Vector3(1, 1, 1);
         } else if(movInput.x < 0){
+            // Look left
+            // rb.SetRotation(Quaternion.Euler(rot.x, -180, rot.z));
             transform.localScale = new Vector3(-1, 1, 1);
         }
+    }
+    
+    void HandleMovement(){
         rb.velocity = new Vector2(movInput.x * speed, rb.velocity.y);
     }
     
@@ -115,6 +122,7 @@ public class PlayerMovementController : MonoBehaviour
             // Debug.Log("Started Jumping");
         } else if(wallSliding){
             isWallJumping = true;
+            rb.velocity = wallJumpForce.x * -transform.right + wallJumpForce.y * transform.up;
             Invoke(nameof(StopWallJumping), wallJumpTime);
         }
     }
