@@ -63,20 +63,27 @@ public class PlayerMovementController : MonoBehaviour
             }
             else{
                 isJumping = false;
-                Debug.Log("Stopped Jumping");
+                // Debug.Log("Stopped Jumping");
             }
         }
     }
 
     public void StartJumping(){
         // rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-        isJumping = true;
-        Debug.Log("Started Jumping");
+        if(isGrounded){
+            isJumping = true;
+            // Debug.Log("Started Jumping");
+        }
     }
 
     internal void StopJumping()
     {
         isJumping = false;
-        Debug.Log("Stopped Jumping");
+        // Debug.Log("Stopped Jumping");
+    }
+
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckRadius);
     }
 }
