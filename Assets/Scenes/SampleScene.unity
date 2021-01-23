@@ -335,7 +335,7 @@ MonoBehaviour:
   jumpForce: 10
   wallSlidingSpeed: 3
   wallJumpForce: {x: 7.5, y: 15}
-  wallJumpTime: 0.2
+  wallJumpTime: 0.15
   groundCheckPoint: {fileID: 1058674890}
   groundCheckRadius: 0.25
   groundLayer:
