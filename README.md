@@ -1,4 +1,4 @@
-# Learning-Platforming
+# Learning Platforming
 
 Here I'll learn the best practices for coding a platformer game.
 
